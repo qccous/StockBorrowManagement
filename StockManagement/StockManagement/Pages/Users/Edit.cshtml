@@ -1,0 +1,105 @@
+﻿@page
+@model StockManagement.Pages.Users.EditModel
+
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.SuccessMessage</div>
+    </div>
+    Model.SuccessMessage = string.Empty;
+}
+@if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.FailMessage</div>
+    </div>
+    Model.FailMessage = string.Empty;
+}
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post"  asp-page="Admin/UserManagement">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="User.Id" />
+            <div class="form-group">
+                <label asp-for="User.Username" class="control-label"></label>
+                <input asp-for="User.Username" class="form-control" />
+                <span asp-validation-for="User.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Password" class="control-label"></label>
+                <input asp-for="User.Password" class="form-control"  type="password"/>
+                <span asp-validation-for="User.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.FirstName" class="control-label"></label>
+                <input asp-for="User.FirstName" class="form-control" />
+                <span asp-validation-for="User.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.LastName" class="control-label"></label>
+                <input asp-for="User.LastName" class="form-control" />
+                <span asp-validation-for="User.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.PhoneNumber" class="control-label"></label>
+                <input asp-for="User.PhoneNumber" class="form-control" />
+                <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Addrress" class="control-label"></label>
+                <input asp-for="User.Addrress" class="form-control" />
+                <span asp-validation-for="User.Addrress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Status" class="control-label"></label>
+                <select asp-for="User.Status" class="form-control">
+                    <option value="true">Hoạt động</option>
+                    <option value="false">Không hoạt động</option>
+                </select>
+                <span asp-validation-for="User.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Gender" class="control-label"></label>
+                <select asp-for="User.Gender" class="form-control">
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
+                <span asp-validation-for="User.Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Role.RoleName" class="control-label"></label>
+                <select asp-for="User.Role.RoleName" class="form-control" asp-items="ViewBag.RoleName"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Admin/UserManagement">
+           <button class="btn btn-info">Quay lại</button>
+       </a>
+</div>

@@ -1,0 +1,100 @@
+﻿@page
+@model StockManagement.Pages.Users.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.SuccessMessage</div>
+    </div>
+    Model.SuccessMessage = string.Empty;
+}
+@if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.FailMessage</div>
+    </div>
+    Model.FailMessage = string.Empty;
+}
+<h1>Tạo người dùng mới</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.Username" class="control-label"></label>
+                <input asp-for="SelectedUser.Username" class="form-control"/>
+                <span asp-validation-for="SelectedUser.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.Password" class="control-label"></label>
+                <input asp-for="SelectedUser.Password" class="form-control" type="password"/>
+                <span asp-validation-for="SelectedUser.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.FirstName" class="control-label"></label>
+                <input asp-for="SelectedUser.FirstName" class="form-control"/>
+                <span asp-validation-for="SelectedUser.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.LastName" class="control-label"></label>
+                <input asp-for="SelectedUser.LastName" class="form-control"/>
+                <span asp-validation-for="SelectedUser.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.PhoneNumber" class="control-label"></label>
+                <input asp-for="SelectedUser.PhoneNumber" class="form-control"/>
+                <span asp-validation-for="SelectedUser.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.Addrress" class="control-label"></label>
+                <input asp-for="SelectedUser.Addrress" class="form-control"/>
+                <span asp-validation-for="SelectedUser.Addrress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.Gender" class="control-label"></label>
+                <select asp-for="SelectedUser.Gender" class="form-control">
+                    <option value="true">Nam</option>
+                    <option value="false">Nữ</option>
+                </select>
+                <input type="hidden" asp-for="SelectedUser.Status" value="true"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedUser.Role.RoleName" class="control-label"></label>
+                <select asp-for="SelectedUser.RoleId" class="form-control">
+                    <option value="1">Admin</option>
+                    <option value="2">User</option>
+                </select>
+                @* <select asp-for="SelectedUser.RoleId" class="form-control"> *@
+                @*     <option value="0">User</option> *@
+                @*     <option value="1">Admin</option> *@
+                @* </select> *@
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Admin/UserManagement">
+        <button class="btn btn-info">Quay lại</button>
+    </a>
+</div>

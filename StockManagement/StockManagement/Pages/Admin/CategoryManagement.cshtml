@@ -1,0 +1,174 @@
+﻿@page
+@model StockManagement.Pages.Admin.CategoryManagementModel
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    @if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.SuccessMessage</div>
+        </div>
+        Model.SuccessMessage = string.Empty;
+    }
+    @if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.FailMessage</div>
+        </div>
+        Model.FailMessage = string.Empty;
+    }
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Lịch sử mượn sản phẩm</span>
+    </h4>
+    <button
+        type="button"
+        class="btn btn-warning"
+        data-bs-toggle="modal"
+        data-bs-target="#createCategoryModal">
+        Thêm mới danh mục
+    </button>
+    <!-- Basic Bootstrap Table -->
+    <div class="card">
+        <div class="table-responsive text-nowrap">
+
+            <table class="table">
+                <form action="" method="get">
+                    <input type="text" name="txtSearch"/>
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </form>
+
+                <thead>
+                <tr>
+                    <th>Tên danh mục</th>
+                    <th>Chỉnh sửa</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                @foreach (var item in Model.Categories)
+                {
+                    //EditCategoryModal
+                    <div class="modal fade" id="@($"editCategoryModal{item.Id}")" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel1">Sửa danh mục</h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                    </button>
+                                </div>
+                                <form method="post" asp-page-handler="Update" asp-route-categoryId="@item.Id">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col mb-3">
+                                                <label for="nameBasic" class="form-label">Tên danh mục</label>
+                                                <input asp-for="SelectedCategory.CategoryName" type="text" id="nameBasic" class="form-control" placeholder="Enter Name" value="@item.CategoryName"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    //CreateCategoryModal
+                    <div class="modal fade" id="createCategoryModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Tạo danh mục</h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                    </button>
+                                </div>
+                                <form method="post" asp-page-handler="Create">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col mb-3">
+                                                <label for="nameBasic" class="form-label">Tên danh mục</label>
+                                                <input asp-for="SelectedCategory.CategoryName" type="text" id="nameBasic" class="form-control" placeholder="Enter Name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    //Fetch data to table
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#@($"editCategoryModal{item.Id}")">
+                                Sửa
+                            </button>
+
+                            <a asp-page="../BorrowAsset" asp-route-categoryId="@item.Id">
+                                <form method="post" asp-page-handler="Delete" asp-route-categoryId="@item.Id">
+                                    <button onclick="onDeleteCategory()" class="btn btn-danger">Xóa</button>
+                                </form>
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <paging class="pagination pagination-wrap" total-records="@Model.CategoriesCount"
+                        show-total-pages="false" show-total-records="false"
+                        page-size="@Model.PageSize" page-no="@Model.PageNo">
+                </paging>
+            </div>
+        </div>
+    </div>
+     <a asp-page="/Admin/StockBorrowManagement">
+            <button class="btn btn-info">Quay lại</button>
+        </a>
+</div>
+<script>
+function onDeleteCategory() {
+const result = confirm('Xóa danh mục này sẽ xóa luôn cả nhưng sản phẩm liên quan\nBạn có muốn xóa?');
+if (result === false){
+event.preventDefault()
+}
+}
+</script>
+<script src="../assets/js/ui-toasts.js"></script>

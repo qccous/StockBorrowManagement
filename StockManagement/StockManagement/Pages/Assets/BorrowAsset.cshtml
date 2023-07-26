@@ -1,0 +1,55 @@
+﻿@page
+@model StockManagement.Pages.Assets.BorrowAssetModel
+
+@{
+}
+    @if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.SuccessMessage</div>
+        </div>
+        Model.SuccessMessage = string.Empty;
+    }
+    @if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.FailMessage</div>
+        </div>
+        Model.FailMessage = string.Empty;
+    }
+<form method="post">
+    <label for="userId">Người mượn</label>
+    <select id="userId" name="userId">
+        @foreach (var user in Model.Users)
+        {
+            if (user.RoleId == 2)
+            {
+                <option value="@user.Id">@user.Username</option>
+            }
+        }
+    </select>
+    <br/>
+    <label for="dueDate">Ngày trả</label>
+    <input type="date" id="dueDate" name="dueDate" min="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+    <br/>
+    <br/>
+    <label for="quantity">Số lượng</label>
+    <input type="text" id="quantity" name="quantity"/>
+    <br/>
+    <button type="submit">Loan Asset</button>
+</form>
+<a asp-page="/Admin/StockBorrowManagement">
+    <button class="btn btn-info">Quay lại</button>
+</a>

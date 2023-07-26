@@ -1,0 +1,72 @@
+﻿@page
+@model StockManagement.Pages.Assets.EditModel
+
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.SuccessMessage</div>
+    </div>
+    Model.SuccessMessage = string.Empty;
+}
+@if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+{
+    <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Thông báo</div>
+            <small>right now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">@Model.FailMessage</div>
+    </div>
+    Model.FailMessage = string.Empty;
+}
+<h1>Edit asset</h1>
+
+<h4>Asset</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-page="Admin/StockBorrowManagement">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Asset.Id"/>
+            <div class="form-group">
+                <label asp-for="Asset.Category!.CategoryName" class="control-label"></label>
+                <select asp-for="Asset.Category!.CategoryName" class="form-control" asp-items="ViewBag.CategoryName"></select>
+                <span asp-validation-for="Asset.Category!.CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Asset.AssetName" class="control-label"></label>
+                <input asp-for="Asset.AssetName" class="form-control"/>
+                <span asp-validation-for="Asset.AssetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Asset.Image" class="control-label"></label>
+                <input asp-for="Asset.Image" class="form-control"/>
+                <span asp-validation-for="Asset.Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Asset.Specification" class="control-label"></label>
+                <input asp-for="Asset.Specification" class="form-control"/>
+                <span asp-validation-for="Asset.Specification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<a asp-page="/Admin/StockBorrowManagement">
+    <button class="btn btn-info">Quay lại</button>
+</a>

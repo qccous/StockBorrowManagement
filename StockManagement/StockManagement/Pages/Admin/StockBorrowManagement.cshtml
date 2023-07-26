@@ -1,0 +1,146 @@
+﻿@page "/StockBorrowManagement"
+@model StockManagement.Pages.Admin.StockBorrowManagementModel
+@{
+}
+    @if (!string.IsNullOrWhiteSpace(@Model.SuccessMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-success bottom-0 end-0 fade show " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.SuccessMessage</div>
+        </div>
+        Model.SuccessMessage = string.Empty;
+    }
+    @if (!string.IsNullOrWhiteSpace(@Model.FailMessage))
+    {
+        <div class="bs-toast toast toast-placement-ex m-2 bg-danger bottom-0 end-0 fade show" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <i class="bx bx-bell me-2"></i>
+                <div class="me-auto fw-semibold">Thông báo</div>
+                <small>right now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">@Model.FailMessage</div>
+        </div>
+        Model.FailMessage = string.Empty;
+    }
+<div class="container-xxl flex-grow-1 container-p-y">
+    <form method="post" asp-page-handler="Logout">
+        <button class="btn btn-danger">Đăng xuất</button>
+    </form>
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Danh sách sản phẩm</span>
+    </h4>
+    <a asp-page="/Assets/Create">
+        <button class="btn btn-warning">Tạo mới sản phẩm</button>
+    </a>
+    <a asp-page="/Admin/CategoryManagement">
+        <button class="btn btn-warning">Quản lí danh mục sản phẩm</button>
+    </a>
+      <a asp-page="/Admin/UserManagement">
+            <button class="btn btn-warning">Quản lí tài khoản</button>
+        </a>
+    <a asp-page="/Admin/BorrowHistoryManagement">
+        <button class="btn btn-warning">Lịch sử mượn sản phẩm</button>
+    </a>
+    <!-- Basic Bootstrap Table -->
+    <div class="card">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <form action="" method="get">
+                    <input type="text" name="txtSearch"/>
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </form>
+                <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Tên SP</th>
+                    <th>Danh mục</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                    <th>Chỉnh sửa</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                @if (Model.Assets is not null)
+                {
+                    @foreach (var item in Model.Assets)
+                    {
+                        <tr>
+                            <td>
+                                <img src="/images/@item.Image" width="100px" height="100px" alt=""/>
+                            </td>
+                            <td>
+                                <a asp-page="../DetailAsset" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.AssetName)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category!.CategoryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            @{
+                                var price = item.Price.ToString("N0") + " VNĐ";
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => price)
+                            </td>
+                            @if (item.Quantity == 0)
+                            {
+                                <td style="color: red; font-weight: bold;">
+                                    Hết hàng
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="color: green; font-weight: bold;">
+                                    Sẵn sàng
+                                </td>
+                            }
+                            @if (item.Quantity == 0)
+                            {
+                                <td >
+                                    <button class="btn btn-danger"> Hết hàng</button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a asp-page="/Assets/BorrowAsset" asp-route-assetId="@item.Id">
+                                        <button class="btn btn-success">Cho mượn</button>
+                                    </a>
+                                </td>
+                            }
+                            <td>
+                                <a asp-page="/Assets/Edit" asp-route-assetId="@item.Id">
+                                    <button class="btn btn-primary">Sửa</button>
+                                </a>
+                                <a asp-page="../BorrowAsset" asp-route-assetId="@item.Id">
+                                    <form method="post" asp-page-handler="Delete" asp-route-assetId="@item.Id">
+                                        <button class="btn btn-danger">Xóa</button>
+                                    </form>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <paging class="pagination pagination-wrap" total-records="@Model.AssetCount"
+                        show-total-pages="false" show-total-records="false"
+                        page-size="@Model.PageSize" page-no="@Model.PageNo">
+                </paging>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ Basic Bootstrap Table -->
